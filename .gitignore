@@ -2,3 +2,5 @@ venv/
 __pycache__/
 .env
 *.pyc
+cc.id.300.vec/
+idwiki_word2vec_300/

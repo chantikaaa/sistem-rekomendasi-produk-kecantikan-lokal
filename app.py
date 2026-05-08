@@ -4,6 +4,9 @@ import re
 import numpy as np
 import pickle
 import gensim
+import gdown
+import os
+from gensim.models import KeyedVectors, Word2Vec
 from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
@@ -29,15 +32,23 @@ def load_model():
 @st.cache_resource
 def load_w2v_model():
     from gensim.models import Word2Vec
-    return Word2Vec.load('idwiki_word2vec_300\idwiki_word2vec_300.model')
+    if not os.path.exists('idwiki_word2vec_300/idwiki_word2vec_300.model'):
+        os.makedirs('idwiki_word2vec_300', exist_ok=True)
+        gdown.download('https://drive.google.com/uc?id=1ljUZgFke8gyx_7nRi6qhiOzg0BaQIZRR', 'idwiki_word2vec_300/idwiki_word2vec_300.model', quiet=False)
+        gdown.download('https://drive.google.com/uc?id=1b19YFHKCMp9B7hrXRFDWAIkjao4bO7n7', 'idwiki_word2vec_300/idwiki_word2vec_300.model.trainables.syn1neg.npy', quiet=False)
+        gdown.download('https://drive.google.com/uc?id=1JLzYISZ2F8_Y6mjKFjkEbg0xNGhOPwqt', 'idwiki_word2vec_300/idwiki_word2vec_300.model.wv.vectors.npy', quiet=False)
+    return Word2Vec.load('idwiki_word2vec_300/idwiki_word2vec_300.model')
 
 model_w2v = load_w2v_model()
 
 @st.cache_resource
 def load_ft_model():
     from gensim.models import KeyedVectors
-    return KeyedVectors.load_word2vec_format('cc.id.300.vec\cc.id.300.vec', binary=False, limit=100000)
-
+    if not os.path.exists('cc.id.300.vec/cc.id.300.vec'):
+        os.makedirs('cc.id.300.vec', exist_ok=True)
+        gdown.download('https://drive.google.com/uc?id=1xTIZpqgBxX_XoNccJZWB4mHdWmQZHRWq', 'cc.id.300.vec/cc.id.300.vec', quiet=False)
+    return KeyedVectors.load_word2vec_format('cc.id.300.vec/cc.id.300.vec', binary=False, limit=100000)
+    
 model_ft = load_ft_model()
 
 @st.cache_data
