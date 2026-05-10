@@ -54,7 +54,7 @@ model_ft = load_ft_model()
 @st.cache_data
 def load_data():
     df_model = pd.read_csv('data_final.csv')
-    df_ui = pd.read_csv('data_ui.csv')
+    df_ui = pd.read_csv('data-ui.csv', sep=';')
     embeddings = np.load('embeddings.npy')
     embeddings_w2v = np.load('embeddings_w2v_pretrained.npy')
     sim_weighted = np.load('similarity_matrix_alpha_0_5.npy')
